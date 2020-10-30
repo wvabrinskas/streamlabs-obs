@@ -17,6 +17,7 @@ import { StreamingService, IStreamSettings } from 'services/streaming';
 import { SyncWithValue } from 'services/app/app-decorators';
 import BaseEditStreamInfo from '../BaseEditSteamInfo';
 import FormInput from 'components/shared/inputs/FormInput.vue';
+import ImageUploaderInput from '../../../../shared/inputs/ImageUploaderInput';
 
 class Props {
   value?: IStreamSettings;

@@ -22,6 +22,7 @@ export enum EInputType {
   toggle = 'toggle',
   mediaGallery = 'mediaGallery',
   sound = 'sound',
+  imageUploader = 'imageUploader',
 }
 
 /**
@@ -126,6 +127,15 @@ export interface ITextAreaMetadata extends IInputMetadata {
   rows: number;
 }
 
+export interface IImageUploaderValue {
+  localUrl: string;
+  remoteUrl: string;
+}
+
+export interface IImageUploaderMetadata extends IInputMetadata {
+  uploadUrl: string;
+}
+
 // a helper for creating metadata for inputs
 export class InputMetadata {
   timer = (options: ITimerMetadata) => ({ type: EInputType.timer, ...options } as ITimerMetadata);
@@ -153,6 +163,8 @@ export class InputMetadata {
     ({ type: EInputType.mediaGallery, ...options } as IMediaGalleryMetadata);
   sound = (options: IMediaGalleryMetadata) =>
     ({ type: EInputType.sound, ...options } as IMediaGalleryMetadata);
+  imageUploader = (options: IImageUploaderMetadata) =>
+    ({ type: EInputType.imageUploader, ...options } as IImageUploaderMetadata);
 }
 export const metadata = new InputMetadata();
 

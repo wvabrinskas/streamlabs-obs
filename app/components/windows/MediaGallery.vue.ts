@@ -1,4 +1,4 @@
-import Vue from 'vue';
+ import Vue from 'vue';
 import electron, { clipboard } from 'electron';
 import { Component } from 'vue-property-decorator';
 import { Inject } from '../../services/core/injector';
