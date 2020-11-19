@@ -69,7 +69,7 @@ export default class EditTransform extends TsxComponent<{}> {
       const scale = Number(value) / this.rect[dir];
       const scaleX = dir === 'width' ? scale : 1;
       const scaleY = dir === 'height' ? scale : 1;
-      const scaleDelta = v2(scaleX, scaleY);
+      const scaleDelta = { x: scaleX, y: scaleY };
 
       this.editorCommandsService.executeCommand(
         'ResizeItemsCommand',
@@ -142,22 +142,22 @@ export default class EditTransform extends TsxComponent<{}> {
           {this.coordinateForm('pos')}
           {this.coordinateForm('scale')}
           <HFormGroup metadata={{ title: $t('Rotation') }}>
-            <button class="button button--default" style="width: 172px;" onClick={this.rotate(90)}>
+            <div class="button button--default" style="width: 172px;" onClick={this.rotate(90)}>
               {$t('Rotate 90 Degrees CW')}
-            </button>
+            </div>
             <div style="margin: 8px;" />
-            <button class="button button--default" style="width: 172px;" onClick={this.rotate(-90)}>
+            <div class="button button--default" style="width: 172px;" onClick={this.rotate(-90)}>
               {$t('Rotate 90 Degrees CCW')}
-            </button>
+            </div>
           </HFormGroup>
           {this.cropForm}
         </ValidatedForm>
 
         <div slot="controls">
-          <button class="button button--default" onClick={this.reset}>
+          <button class="button button--default" onClick={() => this.reset()}>
             {$t('Reset')}
           </button>
-          <button class="button button--action" onClick={this.cancel}>
+          <button class="button button--action" onClick={() => this.cancel()}>
             {$t('Done')}
           </button>
         </div>
