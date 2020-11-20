@@ -1,5 +1,5 @@
 <template>
-<div class="main" :class="theme" id="mainWrapper" @drop="onDropHandler">
+<div class="main" :class="theme" id="mainWrapper" @drop="onDropHandler" style="background-color: transparent;">
   <title-bar :title="title" :class="{ 'titlebar--error': errorAlert }" v-if="uiReady" />
   <news-banner v-if="uiReady" />
   <div
@@ -10,6 +10,7 @@
       'main-contents--left': renderDock && !leftDock && hasLiveDock,
       'main-contents--onboarding': page === 'Onboarding',
     }"
+    style="background-color: transparent;"
   >
     <side-nav v-if="page !== 'Onboarding' && !showLoadingSpinner" :locked="applicationLoading" />
     <div class="live-dock-wrapper" v-if="renderDock && leftDock">

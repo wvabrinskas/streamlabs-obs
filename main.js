@@ -332,7 +332,8 @@ async function startApp() {
     frame: false,
     titleBarStyle: 'hidden',
     title: 'Streamlabs OBS',
-    backgroundColor: '#17242D',
+    // backgroundColor: '#17242D',
+    transparent: true,
     webPreferences: { nodeIntegration: true, webviewTag: true },
   });
 

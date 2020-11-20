@@ -15,6 +15,7 @@
         @mouseenter="handleMouseEnter"
         @dblclick="handleMouseDblClick"
         >
+        <div class="html-display-overlay">THIS IS HTML</div>
         <display
           class="studio-editor-display"
           :drawUI="true"
@@ -51,10 +52,21 @@
   height: 100%;
 }
 
+.html-display-overlay {
+  position: absolute;
+  font-size: 64px;
+  width: 500px;
+  top: 50%;
+  bottom: 50%;
+  left: 50%;
+  right: 50%;
+  color: white;
+}
+
 .studio-editor-display-container {
   position: relative;
   flex-grow: 1;
-  background-color: var(--section);
+  background-color: transparent;
 }
 
 .studio-editor-display {
