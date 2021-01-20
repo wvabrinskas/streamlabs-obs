@@ -283,7 +283,7 @@ export class TwitchService extends BasePlatformService<ITwitchServiceState>
       this.requestTwitch({
         url: `https://api.twitch.tv/kraken/channels/${this.twitchId}`,
         method: 'PUT',
-        body: JSON.stringify({ channel: { game, status: title } }),
+        body: JSON.stringify({ channel: { game } }),
       }),
       this.setStreamTags(tags),
     ]);
