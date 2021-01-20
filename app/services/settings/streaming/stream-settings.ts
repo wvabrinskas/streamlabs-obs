@@ -214,8 +214,8 @@ export class StreamSettingsService extends PersistentStatefulService<IStreamSett
       warnBeforeStoppingStream: obsGeneralSettings.WarnBeforeStoppingStream,
       keepRecordingWhenStreamStops: obsGeneralSettings.KeepRecordingWhenStreamStops,
       keepReplayBufferStreamStops: obsGeneralSettings.KeepReplayBufferStreamStops,
-      delayEnable: obsAdvancedSettings.DelayEnable,
-      delaySec: obsAdvancedSettings.DelaySec,
+      delayEnable: false,
+      delaySec: 0,
     };
   }
 

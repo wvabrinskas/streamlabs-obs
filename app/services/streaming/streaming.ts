@@ -751,24 +751,14 @@ export class StreamingService extends StatefulService<IStreamingServiceState>
   }
 
   get delayEnabled() {
-    return this.streamSettingsService.settings.delayEnable;
+    return false;
   }
 
   get delaySeconds() {
-    return this.streamSettingsService.settings.delaySec;
+    return 0;
   }
 
   get delaySecondsRemaining() {
-    if (!this.delayEnabled) return 0;
-
-    if (
-      this.state.streamingStatus === EStreamingState.Starting ||
-      this.state.streamingStatus === EStreamingState.Ending
-    ) {
-      const elapsedTime = moment().unix() - this.streamingStateChangeTime.unix();
-      return Math.max(this.delaySeconds - elapsedTime, 0);
-    }
-
     return 0;
   }
 

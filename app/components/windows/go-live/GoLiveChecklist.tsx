@@ -30,11 +30,11 @@ export default class GoLiveChecklist extends TsxComponent<Props> {
   @Inject() private youtubeService: YoutubeService;
   @Inject() private twitterService: TwitterService;
   @Inject() private videoEncodingOptimizationService: VideoEncodingOptimizationService;
-  private delayEnabled = this.streamingService.delayEnabled;
+  private delayEnabled = false;
   private delaySecondsRemaining = 0;
 
   created() {
-    if (!this.delayEnabled) return;
+    return;
     const updateDelaySecondsRemaining = () => {
       this.delaySecondsRemaining = this.streamingService.delaySecondsRemaining;
       setTimeout(() => {
@@ -121,7 +121,7 @@ export default class GoLiveChecklist extends TsxComponent<Props> {
           {/* START TRANSMISSION */}
           {!isUpdateMode &&
             this.renderCheck($t('Start video transmission'), checklist.startVideoTransmission, {
-              renderStreamDelay: this.delayEnabled,
+              renderStreamDelay: false,
             })}
 
           {/* POST A TWEET */}

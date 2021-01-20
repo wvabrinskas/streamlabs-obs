@@ -102,17 +102,17 @@ export default class StartStreamingButton extends Vue {
     }
 
     if (this.streamingStatus === EStreamingState.Starting) {
-      if (this.streamingService.delayEnabled) {
-        return `Starting ${this.streamingService.delaySecondsRemaining}s`;
-      }
+      // if (this.streamingService.delayEnabled) {
+      //   return `Starting ${this.streamingService.delaySecondsRemaining}s`;
+      // }
 
       return $t('Starting');
     }
 
     if (this.streamingStatus === EStreamingState.Ending) {
-      if (this.streamingService.delayEnabled) {
-        return `Discard ${this.streamingService.delaySecondsRemaining}s`;
-      }
+      // if (this.streamingService.delayEnabled) {
+      //   return `Discard ${this.streamingService.delaySecondsRemaining}s`;
+      // }
 
       return $t('Ending');
     }
