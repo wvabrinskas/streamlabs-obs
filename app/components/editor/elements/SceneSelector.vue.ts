@@ -15,7 +15,7 @@ import { $t } from 'services/i18n';
 import electron from 'electron';
 import { EditorCommandsService } from 'services/editor-commands';
 import SlVueTree, { ISlTreeNode } from 'sl-vue-tree';
-import { ERenderingMode } from '../../../../obs-api';
+import { ERenderingMode } from 'obs-studio-node';
 import TsxComponent from 'components/tsx-component';
 import { getOS } from 'util/operating-systems';
 import Scrollable from 'components/shared/Scrollable';

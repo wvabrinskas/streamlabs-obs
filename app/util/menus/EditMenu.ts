@@ -14,7 +14,7 @@ import { AudioService } from 'services/audio';
 import electron from 'electron';
 import { $t } from 'services/i18n';
 import { EditorCommandsService } from 'services/editor-commands';
-import { ERenderingMode } from '../../../obs-api';
+import { ERenderingMode } from 'obs-studio-node';
 
 interface IEditMenuOptions {
   selectedSourceId?: string;

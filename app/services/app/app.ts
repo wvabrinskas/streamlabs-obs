@@ -20,7 +20,7 @@ import { FileManagerService } from 'services/file-manager';
 import { PatchNotesService } from 'services/patch-notes';
 import { ProtocolLinksService } from 'services/protocol-links';
 import { WindowsService } from 'services/windows';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { FacemasksService } from 'services/facemasks';
 import { OutageNotificationsService } from 'services/outage-notifications';
 import { CrashReporterService } from 'services/crash-reporter';

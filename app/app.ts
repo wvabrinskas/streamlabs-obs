@@ -9,6 +9,7 @@ window['eval'] = global.eval = () => {
 
 import Vue from 'vue';
 
+import restrictedRequire from 'util/restricted-require';
 import { createStore } from './store';
 import { WindowsService } from './services/windows';
 import { ObsUserPluginsService } from 'services/obs-user-plugins';
@@ -26,7 +27,7 @@ import ChildWindow from 'components/windows/ChildWindow';
 import OneOffWindow from 'components/windows/OneOffWindow.vue';
 import { UserService, setSentryContext } from 'services/user';
 import { getResource } from 'services';
-import * as obs from '../obs-api';
+import * as obs from 'obs-studio-node';
 import path from 'path';
 import util from 'util';
 import uuid from 'uuid/v4';
@@ -37,16 +38,20 @@ import process from 'process';
 import { MetricsService } from 'services/metrics';
 import { UsageStatisticsService } from 'services/usage-statistics';
 
+// This is a hack. We import this module for its side effects only, but
+// need to do something with it to prevent it being optimized out.
+console.log(restrictedRequire);
+
 const crashHandler = window['require']('crash-handler');
 
 const { ipcRenderer, remote, app, contentTracing } = electron;
 const slobsVersion = Utils.env.SLOBS_VERSION;
 const isProduction = Utils.env.NODE_ENV === 'production';
 const isPreview = !!Utils.env.SLOBS_PREVIEW;
+const windowId = Utils.getWindowId();
 
 // Used by Eddy for debugging on mac.
 if (!isProduction) {
-  const windowId = Utils.getWindowId();
   process.title = `SLOBS Renderer ${windowId}`;
 }
 
@@ -65,13 +70,12 @@ if (isProduction) {
       'https://sentry.io/api/1283430/minidump/?sentry_key=01fc20f909124c8499b4972e9a5253f2',
     extra: {
       'sentry[release]': slobsVersion,
-      windowId: Utils.getWindowId(),
+      windowId,
     },
   });
 }
 
 let usingSentry = false;
-const windowId = Utils.getWindowId();
 
 function wrapLogFn(fn: string) {
   const old: Function = console[fn];
@@ -314,7 +318,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // create a root Vue component
-  const windowId = Utils.getCurrentUrlParams().windowId;
   const vm = new Vue({
     i18n,
     store,

@@ -8,7 +8,7 @@ import {
   IObsInput,
   TObsValue,
 } from 'components/obs/inputs/ObsInput';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { SourcesService } from 'services/sources';
 import { Inject } from '../core/injector';
 import { AudioService, E_AUDIO_CHANNELS } from 'services/audio';

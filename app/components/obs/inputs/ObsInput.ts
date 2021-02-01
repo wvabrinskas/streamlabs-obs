@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as obs from '../../../../obs-api';
+import * as obs from 'obs-studio-node';
 import {
   isEditableListProperty,
   isFontProperty,

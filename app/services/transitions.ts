@@ -1,5 +1,5 @@
 import { mutation, StatefulService, ViewHandler } from 'services/core/stateful-service';
-import * as obs from '../../obs-api';
+import * as obs from 'obs-studio-node';
 import { Inject } from 'services/core/injector';
 import { TObsValue, TObsFormData } from 'components/obs/inputs/ObsInput';
 import { IListOption } from 'components/shared/inputs';

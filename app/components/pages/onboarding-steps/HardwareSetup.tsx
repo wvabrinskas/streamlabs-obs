@@ -5,7 +5,7 @@ import { $t } from 'services/i18n';
 import { DefaultHardwareService } from 'services/hardware';
 import MixerVolmeter from 'components/MixerVolmeter.vue';
 import Display from 'components/shared/Display.vue';
-import { ERenderingMode } from '../../../../obs-api';
+import { ERenderingMode } from 'obs-studio-node';
 import VFormGroup from 'components/shared/inputs/VFormGroup.vue';
 import { metadata } from 'components/widgets/inputs';
 import commonStyles from './Common.m.less';

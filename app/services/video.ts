@@ -1,6 +1,6 @@
 import { Service } from './core/service';
 import { SettingsService } from './settings';
-import * as obs from '../../obs-api';
+import * as obs from 'obs-studio-node';
 import electron, { BrowserWindow } from 'electron';
 import { Inject } from './core/injector';
 import Utils from './utils';

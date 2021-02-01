@@ -8,7 +8,7 @@ import { WindowsService } from 'services/windows';
 import { Scene, SceneItem, TSceneNode } from './index';
 import { ISource, SourcesService, ISourceAddOptions } from 'services/sources';
 import { Inject } from 'services/core/injector';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { $t } from 'services/i18n';
 import namingHelpers from 'util/NamingHelpers';
 import uuid from 'uuid/v4';

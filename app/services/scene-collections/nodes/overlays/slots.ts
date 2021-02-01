@@ -12,7 +12,7 @@ import { StreamlabelNode } from './streamlabel';
 import { WidgetNode } from './widget';
 import { SceneSourceNode } from './scene';
 import { AudioService } from 'services/audio';
-import * as obs from '../../../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { WidgetType } from '../../../widgets';
 import { byOS, OS, getOS } from 'util/operating-systems';
 import { GameCaptureNode } from './game-capture';

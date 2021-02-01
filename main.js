@@ -311,6 +311,8 @@ async function startApp() {
   workerWindow.loadURL(`${global.indexUrl}?windowId=worker`);
   // }, 10 * 1000);
 
+  workerWindow.openDevTools({ mode: 'detach' });
+
   // All renderers should use ipcRenderer.sendTo to send to communicate with
   // the worker.  This still gets proxied via the main process, but eventually
   // we will refactor this to not use electron IPC, which will make it much

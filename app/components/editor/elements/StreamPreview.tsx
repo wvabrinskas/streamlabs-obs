@@ -3,7 +3,7 @@ import { Component } from 'vue-property-decorator';
 import { Inject } from 'services/core/injector';
 import Util from 'services/utils';
 import BaseElement from './BaseElement';
-import { ERenderingMode } from '../../../../obs-api';
+import { ERenderingMode } from 'obs-studio-node';
 import { WindowsService } from 'services/windows';
 import styles from './BaseElement.m.less';
 import { $t } from 'services/i18n';

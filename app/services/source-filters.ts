@@ -12,7 +12,7 @@ import path from 'path';
 import { Inject } from './core/injector';
 import { SourcesService } from './sources';
 import { WindowsService } from './windows';
-import * as obs from '../../obs-api';
+import * as obs from 'obs-studio-node';
 import namingHelpers from '../util/NamingHelpers';
 import { $t } from 'services/i18n';
 import { EOrderMovement } from 'obs-studio-node';

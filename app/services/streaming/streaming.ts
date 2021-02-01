@@ -1,5 +1,5 @@
 import { mutation, StatefulService } from 'services/core/stateful-service';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { Inject } from 'services/core/injector';
 import moment from 'moment';
 import padStart from 'lodash/padStart';

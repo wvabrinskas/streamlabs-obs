@@ -3,7 +3,7 @@ import { SceneItem } from '../../../scenes';
 import { VideoService } from '../../../video';
 import { SourcesService } from '../../../sources';
 import sortBy from 'lodash/sortBy';
-import { IListProperty } from '../../../../../obs-api';
+import { IListProperty } from 'obs-studio-node';
 import { ScalableRectangle } from '../../../../util/ScalableRectangle';
 import { Inject } from 'services/core';
 import { DefaultHardwareService } from 'services/hardware';

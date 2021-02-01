@@ -71,6 +71,7 @@ module.exports = {
 
   // We want to dynamically require native addons
   externals: {
+    'obs-studio-node': 'restrictedRequire("obs-studio-node")',
     'font-manager': 'require("font-manager")',
     'color-picker': 'require("color-picker")',
 

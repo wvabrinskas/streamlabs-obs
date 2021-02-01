@@ -12,7 +12,7 @@ import { WebsocketService, TSocketEvent, IAlertPlayingSocketEvent } from 'servic
 import { StreamingService } from 'services/streaming';
 import { WindowsService } from 'services/windows';
 import { handleResponse, authorizedHeaders, jfetch } from 'util/requests';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import path from 'path';
 import fs from 'fs';
 import https from 'https';

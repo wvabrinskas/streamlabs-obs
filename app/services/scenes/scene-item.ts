@@ -10,7 +10,7 @@ import {
   AnchorPoint,
 } from 'util/ScalableRectangle';
 import { TObsFormData } from 'components/obs/inputs/ObsInput';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 
 import {
   IPartialSettings,

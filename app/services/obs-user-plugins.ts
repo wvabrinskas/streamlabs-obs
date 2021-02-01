@@ -2,8 +2,7 @@ import { Service } from './core/service';
 import fs from 'fs';
 import path from 'path';
 import electron from 'electron';
-import * as obs from '../../obs-api';
-import Utils from './utils';
+import * as obs from 'obs-studio-node';
 
 // WARNING: This service is initialized extremely early
 // and should not import any other services.

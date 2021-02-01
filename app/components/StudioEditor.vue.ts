@@ -7,7 +7,7 @@ import { TransitionsService } from 'services/transitions';
 import { EditorService, IMouseEvent } from 'services/editor';
 import { CustomizationService } from 'services/customization';
 import { WindowsService } from 'services/windows';
-import { ERenderingMode } from '../../obs-api';
+import { ERenderingMode } from 'obs-studio-node';
 
 @Component({
   components: { Display, StudioModeControls },

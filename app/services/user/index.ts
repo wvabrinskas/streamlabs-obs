@@ -25,7 +25,7 @@ import uuid from 'uuid/v4';
 import { OnboardingService } from 'services/onboarding';
 import { NavigationService } from 'services/navigation';
 import { SettingsService } from 'services/settings';
-import * as obs from '../../../obs-api';
+import * as obs from 'obs-studio-node';
 import { StreamSettingsService } from 'services/settings/streaming';
 import { lazyModule } from 'util/lazy-module';
 import { AuthModule } from './auth-module';

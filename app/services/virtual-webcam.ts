@@ -1,5 +1,5 @@
 import { StatefulService, mutation } from 'services/core';
-import * as obs from '../../obs-api';
+import * as obs from 'obs-studio-node';
 import fs from 'fs';
 import util from 'util';
 import electron from 'electron';

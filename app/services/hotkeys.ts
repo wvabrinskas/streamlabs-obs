@@ -8,7 +8,7 @@ import { StatefulService, mutation, ServiceHelper } from 'services';
 import defer from 'lodash/defer';
 import mapValues from 'lodash/mapValues';
 import { $t } from 'services/i18n';
-import * as obs from '../../obs-api';
+import * as obs from 'obs-studio-node';
 import { GameOverlayService } from './game-overlay';
 import { CustomizationService } from './customization';
 import { RecentEventsService } from './recent-events';
