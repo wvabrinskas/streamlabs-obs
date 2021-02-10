@@ -1,5 +1,5 @@
 <template>
-  <div class="source-selector">
+  <div class="source-selector" :tabindex="tabIndex" style="outline: none;">
     <div class="studio-controls-top">
       <h2 class="studio-controls__label" v-tooltip.bottom="sourcesTooltip">
         {{ $t('Sources') }}

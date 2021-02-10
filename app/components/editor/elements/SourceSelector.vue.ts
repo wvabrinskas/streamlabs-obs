@@ -251,6 +251,11 @@ export default class SourceSelector extends TsxComponent {
     this.selectionService.views.globalSelection.select(nodesToMove.getIds());
   }
 
+  get tabIndex() {
+    if (this.activeItems.some(node => !node.locked)) return '-1';
+    return undefined;
+  }
+
   makeActive(treeNodes: ISlTreeNode<ISceneNodeData>[], ev: MouseEvent) {
     const ids = treeNodes.map(treeNode => treeNode.data.id);
     this.callCameFromInsideTheHouse = true;
@@ -385,10 +390,8 @@ export default class SourceSelector extends TsxComponent {
   }
 
   lockClassesForSource(sceneNodeId: string) {
-    // TODO: Clean up - need views or similar
-    const items = this.getItemsForNode(sceneNodeId);
     // Locked if all items are locked
-    const locked = !items.find(i => !i.locked);
+    const locked = this.isLocked(sceneNodeId);
 
     return {
       'icon-lock': locked,
