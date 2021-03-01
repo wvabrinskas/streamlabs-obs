@@ -57,7 +57,7 @@ export abstract class PersistentStatefulService<TState extends object> extends S
     return migratedState;
   }
 
-  filter(state: TState) {
+  filter(state: TState): TState {
     return state;
   }
 }
