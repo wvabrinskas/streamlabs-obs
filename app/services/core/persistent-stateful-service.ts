@@ -32,7 +32,7 @@ export abstract class PersistentStatefulService<TState extends object> extends S
   init() {
     this.store.watch(
       () => {
-        return JSON.stringify(this.state);
+        return JSON.stringify(this.filter(this.state));
       },
       val => {
         // save only non-default values to the localStorage
@@ -55,5 +55,9 @@ export abstract class PersistentStatefulService<TState extends object> extends S
     });
 
     return migratedState;
+  }
+
+  filter(state: TState) {
+    return state;
   }
 }
