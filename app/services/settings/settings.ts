@@ -250,9 +250,9 @@ export class SettingsService extends StatefulService<ISettingsServiceState> {
       [OS.Windows]: () => {
         categories = categories.concat(['Game Overlay']);
 
-        if (this.facemasksService.state.active) {
-          categories = categories.concat(['Face Masks']);
-        }
+        // if (this.facemasksService.state.active) {
+        categories = categories.concat(['Face Masks']);
+        // }
       },
     });
 
