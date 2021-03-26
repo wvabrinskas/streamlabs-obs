@@ -86,6 +86,10 @@ export default class StudioFooterComponent extends Vue {
     return this.customizationService.state.mediaBackupOptOut;
   }
 
+  get performanceMode() {
+    return this.customizationService.state.performanceMode;
+  }
+
   get recording() {
     return this.streamingService.isRecording;
   }
@@ -107,6 +111,13 @@ export default class StudioFooterComponent extends Vue {
       }
     }
     return true;
+  }
+
+  get recButtonClass() {
+    return {
+      perfActive: this.recording && this.performanceMode,
+      active: this.recording && !this.performanceMode
+    }
   }
 
   openYoutubeEnable() {

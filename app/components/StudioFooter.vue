@@ -32,7 +32,7 @@
           :disabled="locked"
           class="record-button"
           @click="toggleRecording"
-          :class="{ active: streamingService.isRecording }"
+          :class="recButtonClass"
         >
           <span>REC</span>
         </button>
@@ -184,6 +184,14 @@
 
   &.active {
     animation: pulse 2.5s linear infinite;
+    background-color: var(--warning);
+
+    span {
+      color: var(--white);
+    }
+  }
+
+  &.perfActive {
     background-color: var(--warning);
 
     span {
