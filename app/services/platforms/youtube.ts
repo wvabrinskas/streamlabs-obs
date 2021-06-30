@@ -8,7 +8,7 @@ import {
 } from '.';
 import { Inject } from 'services/core/injector';
 import { authorizedHeaders, jfetch } from 'util/requests';
-import { platformAuthorizedRequest } from './utils';
+import { platformAuthorizedRequest, platformRequest } from './utils';
 import { StreamSettingsService } from 'services/settings/streaming';
 import { CustomizationService } from 'services/customization';
 import { IGoLiveSettings } from 'services/streaming';
@@ -19,6 +19,8 @@ import { BasePlatformService } from './base-platform';
 import { assertIsDefined } from 'util/properties-type-guards';
 import electron from 'electron';
 import Utils from '../utils';
+import { YoutubeUploader } from './youtube/uploader';
+import { lazyModule } from 'util/lazy-module';
 
 interface IYoutubeServiceState extends IPlatformState {
   liveStreamingEnabled: boolean;
@@ -160,6 +162,8 @@ export class YoutubeService
   @Inject() private customizationService: CustomizationService;
   @Inject() private windowsService: WindowsService;
   @Inject() private i18nService: I18nService;
+
+  @lazyModule(YoutubeUploader) uploader: YoutubeUploader;
 
   readonly capabilities = new Set<TPlatformCapability>([
     'title',
@@ -510,7 +514,6 @@ export class YoutubeService
       enableDvr: params.enableDvr,
       enableEmbed: broadcast.contentDetails.enableEmbed,
       projection: isMidStreamMode ? broadcast.contentDetails.projection : params.projection,
-      enableLowLatency: params.latencyPreference === 'low',
       latencyPreference: isMidStreamMode
         ? broadcast.contentDetails.latencyPreference
         : params.latencyPreference,
@@ -728,6 +731,15 @@ export class YoutubeService
       const errorType = 'YOUTUBE_THUMBNAIL_UPLOAD_FAILED';
       throw throwStreamError(errorType, e as any, details);
     }
+  }
+
+  fetchFollowers() {
+    return platformAuthorizedRequest<{ items: { statistics: { subscriberCount: number } }[] }>(
+      'youtube',
+      `${this.apiBase}/channels?part=statistics&mine=true`,
+    )
+      .then(json => Number(json.items[0].statistics.subscriberCount))
+      .catch(() => 0);
   }
 
   @mutation()
