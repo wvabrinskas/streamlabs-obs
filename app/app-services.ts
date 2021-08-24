@@ -107,11 +107,14 @@ export { SubGoalService } from 'services/widgets/settings/sub-goal';
 export { MediaShareService } from 'services/widgets/settings/media-share';
 export { AlertBoxService } from 'services/widgets/settings/alert-box';
 export { SpinWheelService } from 'services/widgets/settings/spin-wheel';
+export { PollService } from 'services/widgets/settings/poll';
+export { EmoteWallService } from 'services/widgets/settings/emote-wall';
 
 import { WindowsService } from './services/windows';
 import { CustomizationService } from './services/customization';
 import { ScenesService } from './services/scenes';
 import { EditorCommandsService } from './services/editor-commands';
+import { EditorService } from 'services/editor';
 import { PerformanceService } from './services/performance';
 import { SourcesService } from './services/sources';
 import { StreamingService } from './services/streaming';
@@ -135,9 +138,13 @@ import { GrowService } from './services/grow/grow';
 import { TransitionsService } from './services/transitions';
 import { MagicLinkService } from './services/magic-link';
 import { UsageStatisticsService } from './services/usage-statistics';
-import { HotkeysService } from './services/hotkeys';
+import { NotificationsService } from './services/notifications';
 import { MediaBackupService } from './services/media-backup';
+import { HotkeysService } from './services/hotkeys';
 import { WidgetsService } from './services/widgets';
+import { HostsService } from './services/hosts';
+import { OnboardingService } from './services/onboarding';
+import { PlatformAppsService } from './services/platform-apps';
 
 export const AppServices = {
   WindowsService,
@@ -147,6 +154,7 @@ export const AppServices = {
   SettingsService,
   CustomizationService,
   EditorCommandsService,
+  EditorService,
   PerformanceService,
   SourcesService,
   PatchNotesService,
@@ -167,7 +175,11 @@ export const AppServices = {
   TransitionsService,
   MagicLinkService,
   UsageStatisticsService,
-  HotkeysService,
+  NotificationsService,
   MediaBackupService,
+  HotkeysService,
   WidgetsService,
+  HostsService,
+  OnboardingService,
+  PlatformAppsService,
 };

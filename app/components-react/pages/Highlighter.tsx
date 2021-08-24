@@ -2,30 +2,31 @@ import { useVuex } from 'components-react/hooks';
 import React, { useEffect, useState } from 'react';
 import { Services } from 'components-react/service-provider';
 import styles from './Highlighter.m.less';
-import { IClip, TTransitionType } from 'services/highlighter';
+import { IClip } from 'services/highlighter';
 import ClipPreview from 'components-react/highlighter/ClipPreview';
 import ClipTrimmer from 'components-react/highlighter/ClipTrimmer';
 import { ReactSortable } from 'react-sortablejs';
-import { ListInput } from 'components-react/shared/inputs/ListInput';
 import Form from 'components-react/shared/inputs/Form';
 import isEqual from 'lodash/isEqual';
 import { SliderInput, FileInput, SwitchInput } from 'components-react/shared/inputs';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Alert } from 'antd';
 import ExportModal from 'components-react/highlighter/ExportModal';
 import PreviewModal from 'components-react/highlighter/PreviewModal';
 import BlankSlate from 'components-react/highlighter/BlankSlate';
-import { SCRUB_HEIGHT, SCRUB_WIDTH } from 'services/highlighter/constants';
+import { SCRUB_HEIGHT, SCRUB_WIDTH, SUPPORTED_FILE_TYPES } from 'services/highlighter/constants';
 import electron from 'electron';
 import path from 'path';
 import Scrollable from 'components-react/shared/Scrollable';
 import { IHotkey } from 'services/hotkeys';
 import { getBindingString } from 'components-react/shared/HotkeyBinding';
 import Animate from 'rc-animate';
+import TransitionSelector from 'components-react/highlighter/TransitionSelector';
+import { $t } from 'services/i18n';
 
 type TModal = 'trim' | 'export' | 'preview' | 'remove';
 
 export default function Highlighter() {
-  const { HighlighterService, HotkeysService } = Services;
+  const { HighlighterService, HotkeysService, UsageStatisticsService } = Services;
   const v = useVuex(() => ({
     clips: HighlighterService.views.clips as IClip[],
     exportInfo: HighlighterService.views.exportInfo,
@@ -35,6 +36,7 @@ export default function Highlighter() {
     transition: HighlighterService.views.transition,
     dismissedTutorial: HighlighterService.views.dismissedTutorial,
     audio: HighlighterService.views.audio,
+    error: HighlighterService.views.error,
   }));
 
   const [showModal, rawSetShowModal] = useState<TModal | null>(null);
@@ -54,6 +56,8 @@ export default function Highlighter() {
       if (hotkey) setHotkey(hotkey);
     });
   }, []);
+
+  useEffect(() => UsageStatisticsService.actions.recordFeatureUsage('Highlighter'), []);
 
   // This is kind of weird, but ensures that modals stay the right
   // size while the closing animation is played. This is why modal
@@ -84,17 +88,6 @@ export default function Highlighter() {
   }
 
   function getControls() {
-    const transitionTypes = HighlighterService.views.availableTransitions.map(t => {
-      return {
-        label: t.displayName,
-        value: t.type,
-      };
-    });
-
-    function setTransitionType(type: TTransitionType) {
-      HighlighterService.actions.setTransition({ type });
-    }
-
     function setTransitionDuration(duration: number) {
       HighlighterService.actions.setTransition({ duration });
     }
@@ -106,6 +99,7 @@ export default function Highlighter() {
     const musicExtensions = ['mp3', 'wav', 'flac'];
 
     function setMusicFile(file: string) {
+      if (!musicExtensions.map(e => `.${e}`).includes(path.parse(file).ext)) return;
       HighlighterService.actions.setAudio({ musicPath: file });
     }
 
@@ -114,7 +108,7 @@ export default function Highlighter() {
     }
 
     return (
-      <div
+      <Scrollable
         style={{
           width: '300px',
           flexShrink: 0,
@@ -124,14 +118,9 @@ export default function Highlighter() {
         }}
       >
         <Form layout="vertical">
-          <ListInput
-            label="Transition Type"
-            value={v.transition.type}
-            options={transitionTypes}
-            onChange={setTransitionType}
-          />
+          <TransitionSelector />
           <SliderInput
-            label="Transition Duration"
+            label={$t('Transition Duration')}
             value={v.transition.duration}
             onChange={setTransitionDuration}
             min={0.5}
@@ -143,7 +132,7 @@ export default function Highlighter() {
             tipFormatter={v => `${v}s`}
           />
           <SwitchInput
-            label="Background Music"
+            label={$t('Background Music')}
             value={v.audio.musicEnabled}
             onChange={setMusicEnabled}
           />
@@ -151,13 +140,13 @@ export default function Highlighter() {
             {v.audio.musicEnabled && (
               <div>
                 <FileInput
-                  label="Music File"
+                  label={$t('Music File')}
                   value={v.audio.musicPath}
-                  filters={[{ name: 'Audio File', extensions: musicExtensions }]}
+                  filters={[{ name: $t('Audio File'), extensions: musicExtensions }]}
                   onChange={setMusicFile}
                 />
                 <SliderInput
-                  label="Music Volume"
+                  label={$t('Music Volume')}
                   value={v.audio.musicVolume}
                   onChange={setMusicVolume}
                   min={0}
@@ -176,12 +165,12 @@ export default function Highlighter() {
           style={{ marginTop: '16px', marginRight: '8px' }}
           onClick={() => setShowModal('preview')}
         >
-          Preview
+          {$t('Preview')}
         </Button>
         <Button type="primary" style={{ marginTop: '16px' }} onClick={() => setShowModal('export')}>
-          Export
+          {$t('Export')}
         </Button>
-      </div>
+      </Scrollable>
     );
   }
 
@@ -211,14 +200,15 @@ export default function Highlighter() {
 
     setInspectedClipPath(null);
     setShowModal(null);
+
+    if (v.error) HighlighterService.actions.dismissError();
   }
 
   function getClipsView() {
     const clipList = [{ id: 'add', filtered: true }, ...v.clips.map(c => ({ id: c.path }))];
 
     function onDrop(e: React.DragEvent<HTMLDivElement>) {
-      // TODO: Figure out what extensions we support
-      const extensions = ['.mp4', '.webm', '.flv'];
+      const extensions = SUPPORTED_FILE_TYPES.map(e => `.${e}`);
       const files: string[] = [];
       let fi = e.dataTransfer.files.length;
       while (fi--) {
@@ -244,14 +234,19 @@ export default function Highlighter() {
         <Scrollable style={{ flexGrow: 1, padding: '20px 0 20px 20px' }}>
           <div style={{ display: 'flex', paddingRight: 20 }}>
             <div style={{ flexGrow: 1 }}>
-              <h1>Highlighter</h1>
-              <p>{'Drag & drop to reorder clips.'}</p>
+              <h1>
+                {$t('Highlighter')}{' '}
+                <span style={{ fontSize: 12, verticalAlign: 'top', color: 'var(--beta-text)' }}>
+                  {$t('Beta')}
+                </span>
+              </h1>
+              <p>{$t('Drag & drop to reorder clips.')}</p>
             </div>
             <div>
               {hotkey && hotkey.bindings[0] && (
                 <b style={{ marginRight: 20 }}>{getBindingString(hotkey.bindings[0])}</b>
               )}
-              <Button onClick={() => setShowTutorial(true)}>View Tutorial</Button>
+              <Button onClick={() => setShowTutorial(true)}>{$t('View Tutorial')}</Button>
             </div>
           </div>
           <ReactSortable
@@ -299,9 +294,11 @@ export default function Highlighter() {
           footer={null}
           width={modalWidth}
           closable={false}
-          visible={!!showModal}
+          visible={!!showModal || !!v.error}
           destroyOnClose={true}
+          keyboard={false}
         >
+          {!!v.error && <Alert message={v.error} type="error" showIcon />}
           {inspectedClip && showModal === 'trim' && <ClipTrimmer clip={inspectedClip} />}
           {showModal === 'export' && <ExportModal close={closeModal} />}
           {showModal === 'preview' && <PreviewModal close={closeModal} />}
@@ -313,7 +310,7 @@ export default function Highlighter() {
     );
   }
 
-  if ((!v.clips.length && !v.dismissedTutorial) || showTutorial) {
+  if ((!v.clips.length && !v.dismissedTutorial && !v.error) || showTutorial) {
     return (
       <BlankSlate
         close={() => {
@@ -336,7 +333,7 @@ function AddClip() {
       electron.remote.getCurrentWindow(),
       {
         properties: ['openFile', 'multiSelections'],
-        filters: [{ name: 'Video Files', extensions: ['mp4', 'webm', 'flv'] }],
+        filters: [{ name: $t('Video Files'), extensions: SUPPORTED_FILE_TYPES }],
       },
     );
 
@@ -356,9 +353,9 @@ function AddClip() {
     >
       <div style={{ fontSize: 24, textAlign: 'center', marginTop: 50 }}>
         <i className="icon-add" style={{ marginRight: 8 }} />
-        Add Clip
+        {$t('Add Clip')}
       </div>
-      <p style={{ textAlign: 'center' }}>{'Drag & drop or click to add clips'}</p>
+      <p style={{ textAlign: 'center' }}>{$t('Drag & drop or click to add clips')}</p>
     </div>
   );
 }
@@ -368,13 +365,14 @@ function RemoveClip(p: { clip: IClip; close: () => void }) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h2>Remove the clip?</h2>
+      <h2>{$t('Remove the clip?')}</h2>
       <p>
-        Are you sure you want to remove the clip? You will need to manually import it again to
-        reverse this action.
+        {$t(
+          'Are you sure you want to remove the clip? You will need to manually import it again to reverse this action.',
+        )}
       </p>
       <Button style={{ marginRight: 8 }} onClick={p.close}>
-        Canncel
+        {$t('Cancel')}
       </Button>
       <Button
         type="primary"
@@ -384,7 +382,7 @@ function RemoveClip(p: { clip: IClip; close: () => void }) {
           p.close();
         }}
       >
-        Remove
+        {$t('Remove')}
       </Button>
     </div>
   );

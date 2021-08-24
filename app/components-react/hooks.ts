@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import debounce from 'lodash/debounce';
 import { StatefulService } from '../services/core';
 import { createBinding, TBindings } from './shared/inputs';
@@ -89,10 +89,17 @@ export function useFormState<T extends object>(initializer: T | (() => T)): TUse
   // create a reference to the last actual state
   const stateRef = useRef(s);
 
+  // use isDestroyed flag to prevent updating state on destroyed components
+  const isDestroyedRef = useRef(false);
+  useOnDestroy(() => {
+    isDestroyedRef.current = true;
+  });
+
   // create a reference to AntForm
   const form = useForm();
 
   function setState(newState: T) {
+    if (isDestroyedRef.current) return;
     // keep the reference in sync when we update the state
     stateRef.current = newState;
     setStateRaw(newState);
@@ -119,7 +126,7 @@ export function useFormState<T extends object>(initializer: T | (() => T)): TUse
     setState,
     updateState,
     setItem,
-    bind: createBinding(s, setState),
+    bind: createBinding(() => stateRef.current, setState),
     stateRef,
     form,
   };
@@ -149,4 +156,20 @@ type TUseFormStateResult<TState extends object> = {
 export function useForceUpdate() {
   const [, forceUpdate] = React.useReducer(x => x + 1, 0);
   return forceUpdate;
+}
+
+/**
+ * Sets a function that guarantees a re-render and fresh state on every tick of the delay
+ */
+export function useRenderInterval(callback: () => void, delay: number) {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      callback();
+      setTick(tick + 1);
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [tick]);
 }

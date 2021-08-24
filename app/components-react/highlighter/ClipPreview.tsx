@@ -7,6 +7,7 @@ import { BoolButtonInput } from 'components-react/shared/inputs/BoolButtonInput'
 import styles from '../pages/Highlighter.m.less';
 import cx from 'classnames';
 import { Tooltip } from 'antd';
+import { $t } from 'services/i18n';
 
 export default function ClipPreview(props: {
   clip: IClip;
@@ -37,7 +38,7 @@ export default function ClipPreview(props: {
     <div style={{ height: `${SCRUB_HEIGHT}px`, position: 'relative' }}>
       {!props.clip.deleted && (
         <img
-          src={props.clip.scrubSprite}
+          src={props.clip.scrubSprite?.replace('#', '%23')}
           style={{
             width: `${SCRUB_WIDTH}px`,
             height: `${SCRUB_HEIGHT}px`,
@@ -76,7 +77,7 @@ export default function ClipPreview(props: {
       )}
       <span style={{ position: 'absolute', top: '10px', left: '10px' }}>
         <BoolButtonInput
-          tooltip={enabled ? 'Disable clip' : 'Enable clip'}
+          tooltip={enabled ? $t('Disable clip') : $t('Enable clip')}
           tooltipPlacement="top"
           value={enabled}
           onChange={setEnabled}
@@ -99,17 +100,18 @@ export default function ClipPreview(props: {
           padding: '2px 8px 0',
           borderRadius: '5px',
           background: 'rgba(0,0,0,0.5)',
+          color: 'var(--highlighter-icon)',
         }}
       >
         {/* TODO: Let's not use the same icon as studio mode */}
-        <Tooltip title="Trim clip" placement="top">
+        <Tooltip title={$t('Trim clip')} placement="top">
           <i
             className={cx('icon-studio-mode-3', styles.clipAction)}
             style={{ marginRight: 12 }}
             onClick={props.showTrim}
           />
         </Tooltip>
-        <Tooltip title="Remove clip" placement="top">
+        <Tooltip title={$t('Remove clip')} placement="top">
           <i className={cx('icon-trash', styles.clipAction)} onClick={props.showRemove} />
         </Tooltip>
       </div>
@@ -121,6 +123,7 @@ export default function ClipPreview(props: {
           width: '100%',
           padding: '0 10px',
           borderRadius: '0 0 10px 10px',
+          color: 'var(--highlighter-icon)',
         }}
       >
         {`${props.clip.deleted ? '[DELETED] ' : ''}${filename}`}

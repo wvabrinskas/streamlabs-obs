@@ -164,6 +164,33 @@ export class PlatformLogo extends ReactComponent<{
   color?: string;
   unwrapped?: boolean;
 }> {}
+
+@Component({
+  props: {
+    name: { default: 'SharedComponentsLibrary' },
+    wrapperStyles: { default: () => ({ height: '100%' }) },
+  },
+})
+export class SharedComponentsLibrary extends ReactComponent {}
+
+@Component({
+  props: {
+    name: { default: 'RenameSource' },
+    wrapperStyles: { default: () => ({ height: '100%' }) },
+  },
+})
+export class RenameSource extends ReactComponent {}
+@Component({
+  props: {
+    name: { default: 'AdvancedStatistics' },
+    wrapperStyles: { default: () => ({ height: '100%' }) },
+  },
+})
+export class AdvancedStatistics extends ReactComponent {}
+
+@Component({ props: { name: { default: 'StreamScheduler' } } })
+export class StreamScheduler extends ReactComponent {}
+
 @Component({ props: { name: { default: 'StartStreamingButton' } } })
 export class StartStreamingButton extends ReactComponent {}
 @Component({
@@ -173,3 +200,25 @@ export class StartStreamingButton extends ReactComponent {}
   },
 })
 export class TestWidgets extends ReactComponent<{ testers: string[] }> {}
+@Component({ props: { name: { default: 'NotificationsArea' } } })
+export class NotificationsArea extends ReactComponent {}
+@Component({
+  props: {
+    name: { default: 'AppsNav' },
+    wrapperStyles: {
+      default: () => ({
+        background: 'var(--section-alt)',
+        position: 'relative',
+        width: '52px',
+        height: 0,
+        paddingTop: '6px',
+        flexGrow: 1,
+        flexBasis: 0,
+        overflow: 'hidden',
+      }),
+    },
+  },
+})
+export class AppsNav extends ReactComponent {}
+@Component({ props: { name: { default: 'StudioEditor' } } })
+export class StudioEditor extends ReactComponent {}

@@ -33,7 +33,10 @@ type TAnalyticsEvent =
   | 'Click'
   | 'Session'
   | 'Shown'
-  | 'AppStart';
+  | 'AppStart'
+  | 'Highlighter'
+  | 'Hardware'
+  | 'WebcamUse';
 
 interface IAnalyticsEvent {
   product: string;

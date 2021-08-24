@@ -16,6 +16,7 @@ const ANT_SELECT_FEATURES = [
   'onSearch',
   'onSelect',
   'allowClear',
+  'defaultActiveFirstOption',
 ] as const;
 
 // define custom props
@@ -76,8 +77,11 @@ export const ListInput = InputComponent(<T extends any>(p: TListInputProps<T>) =
         optionFilterProp="label"
         optionLabelProp="labelrender"
         onSearch={p.showSearch ? onSearchHandler : undefined}
-        onSelect={val => p.onChange && p.onChange(val as T)}
+        onChange={val => p.onChange && p.onChange(val as T)}
         defaultValue={p.defaultValue as string}
+        data-value={inputAttrs.value}
+        data-selected-option-label={selectedOption?.label}
+        data-show-search={inputAttrs['showSearch']}
       >
         {options && options.map((opt, ind) => renderOption(opt, ind, p))}
       </Select>
@@ -129,7 +133,7 @@ function renderOptionWithImage<T>(opt: IListOption<T>, inputProps: ICustomListPr
     height: `${height}px`,
   };
   return (
-    <Row gutter={8} align="middle">
+    <Row gutter={8} align="middle" wrap={false}>
       <Col>
         {src && <img src={src} alt="" style={imageStyle} />}
         {!src && <div style={imageStyle} />}
