@@ -26,13 +26,15 @@ import {
   PerformanceMetrics,
   RenameSource,
   AdvancedStatistics,
+  WidgetWindow,
+  CustomCodeWindow,
   SafeMode,
+  AdvancedAudio,
 } from 'components/shared/ReactComponentList';
 
 import SourceProperties from 'components/windows/SourceProperties.vue';
 import SourceFilters from 'components/windows/SourceFilters.vue';
 import AddSourceFilter from 'components/windows/AddSourceFilter';
-import AdvancedAudio from 'components/windows/AdvancedAudio';
 import Notifications from 'components/windows/Notifications.vue';
 import Troubleshooter from 'components/windows/Troubleshooter.vue';
 import Blank from 'components/windows/Blank.vue';
@@ -144,6 +146,8 @@ export function getComponents() {
     IconLibraryProperties,
     ScreenCaptureProperties,
     SharedComponentsLibrary,
+    WidgetWindow,
+    CustomCodeWindow,
   };
 }
 
@@ -162,6 +166,10 @@ export interface IWindowOptions extends Electron.BrowserWindowConstructorOptions
   isShown: boolean;
   title?: string;
   center?: boolean;
+  position?: {
+    x: number;
+    y: number;
+  };
   isPreserved?: boolean;
   preservePrevWindow?: boolean;
   prevWindowOptions?: IWindowOptions;
@@ -432,6 +440,7 @@ export class WindowsService extends StatefulService<IWindowsState> {
       },
       ...options,
       ...options.size,
+      ...(options.position || {}),
     }));
     newWindow.removeMenu();
     newWindow.on('closed', () => {
